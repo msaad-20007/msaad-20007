@@ -31,7 +31,7 @@
 
 <img src="./assets/activity.svg" width="100%" alt="Real GitHub contribution activity — 2D daily bar chart"/>
 
-**[↗ OPEN NATIVE GITHUB CONTRIBUTION HISTORY](https://github.com/msaad-20007)**
+**[↗ OPEN NATIVE GITHUB CONTRIBUTION HISTORY](https://github.com/msaad-20007?tab=overview#js-contribution-activity)**
 
 <img src="./assets/connect.svg" width="100%" alt="Connection ports"/>
 

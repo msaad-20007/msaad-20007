@@ -1,10 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="490" viewBox="0 0 1200 490">
-<defs>
-<linearGradient id="b"><stop stop-color="#071326"/><stop offset=".55" stop-color="#0b1730"/><stop offset="1" stop-color="#160b2e"/></linearGradient>
-<linearGradient id="c"><stop stop-color="#39f6ff"/><stop offset=".5" stop-color="#7b7cff"/><stop offset="1" stop-color="#d36bff"/></linearGradient>
-<filter id="g"><feGaussianBlur stdDeviation="4" result="x"/><feMerge><feMergeNode in="x"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-<pattern id="p" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#6cefff" stroke-opacity=".055"/></pattern>
-</defs>
-<rect width="1200" height="490" rx="28" fill="url(#b)"/><rect x="1" y="1" width="1198" height="488" rx="28" fill="url(#p)" stroke="#3cecff" stroke-opacity=".35"/>
-<g font-family="Arial,Helvetica,sans-serif"><text x="58" y="64" fill="#6ef7ff" font-size="15" letter-spacing="4">04 / LIVE CONTRIBUTION SIGNAL</text><text x="58" y="105" fill="#f1f7ff" font-size="30" font-weight="700">NEURAL ACTIVITY MAP</text><text x="58" y="133" fill="#728bad" font-size="14">Real GitHub contribution data · locally rendered · refreshed by Actions</text>
-<g transform="translate(58 170)"><rect width="1084" height="260" rx="18" fill="#071426" stroke="#39f6ff" stroke-opacity=".35"/><path d="M22 216H1060 M22 178H1060 M22 140H1060 M22 102H1060 M22 64H1060" stroke="#5eefff" stroke-opacity=".06"/><path d="M22 216 C120 190 150 205 215 145 S330 180 390 118 S510 160 575 96 S690 155 760 86 S900 126 1060 48" fill="none" stroke="#39f6ff" stroke-opacity=".65" stroke-width="2" filter="url(#g)"/><path d="M22 216 C120 190 150 205 215 145 S330 180 390 118 S510 160 575 96 S690 155 760 86 S900 126 1060 48" fill="none" stroke="#b66cff" stroke-opacity=".25" stroke-width="8" filter="url(#g)"/><g fill="#6ef7ff"><circle cx="215" cy="145" r="5"/><circle cx="390" cy="118" r="5"/><circle cx="575" cy="96" r="5"/><circle cx="760" cy="86" r="5"/></g><rect x="20" y="42" width="2" height="180" fill="#d36bff" opacity=".55"><animate attributeName="x" values="20;1058;20" dur="6s" repeatCount="indefinite"/></rect><text x="32" y="28" fill="#7d96bb" font-size="10" letter-spacing="2">PREVIEW — FIRST ACTION RUN REPLACES THIS WITH REAL DAILY DATA</text></g><text x="58" y="460" fill="#6ef7ff" font-size="12" letter-spacing="2">PIPELINE</text><text x="135" y="460" fill="#7b8fae" font-size="12">GitHub GraphQL → contribution calendar → custom signal SVG → README</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="610" viewBox="0 0 1200 610">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071326"/><stop offset=".55" stop-color="#0b1730"/><stop offset="1" stop-color="#160b2e"/></linearGradient><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#6cefff" stroke-opacity=".045"/></pattern></defs>
+<rect width="1200" height="610" rx="28" fill="url(#bg)"/><rect x="1" y="1" width="1198" height="608" rx="28" fill="url(#grid)" stroke="#3cecff" stroke-opacity=".35"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="58" y="46" fill="#6ef7ff" font-size="14" letter-spacing="3.5">04 / LIVE CONTRIBUTION DATA</text>
+<text x="58" y="83" fill="#f1f7ff" font-size="28" font-weight="700">DAILY CONTRIBUTION BARS</text>
+<text x="58" y="108" fill="#728bad" font-size="13">Waiting for the first GitHub Actions refresh — no contribution numbers are fabricated.</text>
+<rect x="66" y="142" width="1068" height="385" rx="18" fill="#071426" stroke="#39f6ff" stroke-opacity=".22"/>
+<text x="600" y="292" text-anchor="middle" fill="#6ef7ff" font-size="18" letter-spacing="3">LIVE GITHUB DATA FEED</text>
+<text x="600" y="326" text-anchor="middle" fill="#9aabc6" font-size="14">Run “Refresh Cybernetic Activity” in GitHub Actions.</text>
+<text x="600" y="352" text-anchor="middle" fill="#7187aa" font-size="12">Then this panel becomes a 53-week × 7-day bar chart.</text>
+<text x="600" y="400" text-anchor="middle" fill="#d36bff" font-size="12" letter-spacing="2">MON · TUE · WED · THU · FRI · SAT · SUN</text>
+<text x="600" y="438" text-anchor="middle" fill="#7187aa" font-size="11">Each bar = one real GitHub contribution day · date + count in the bar tooltip</text>
+</g></svg>
