@@ -1,29 +1,45 @@
 #!/usr/bin/env python3
-import json, os, urllib.request, math, html
-USER=os.getenv("GITHUB_USER","msaad-20007")
-TOKEN=os.environ["GITHUB_TOKEN"]
-Q='query($login:String!){user(login:$login){contributionsCollection{contributionCalendar{totalContributions weeks{contributionDays{date contributionCount}}}}}}'
-body=json.dumps({"query":Q,"variables":{"login":USER}}).encode()
-req=urllib.request.Request("https://api.github.com/graphql",data=body,headers={"Authorization":f"Bearer {TOKEN}","Content-Type":"application/json","User-Agent":"saad-profile-activity"},method="POST")
-with urllib.request.urlopen(req,timeout=30) as r: data=json.load(r)
-if data.get("errors"): raise RuntimeError(json.dumps(data["errors"]))
-cal=data["data"]["user"]["contributionsCollection"]["contributionCalendar"]
-days=[d for w in cal["weeks"] for d in w["contributionDays"]]
-peak=max([d["contributionCount"] for d in days] or [1]); total=cal["totalContributions"]
-left,bottom,usable,height=22,216,1038,174
-pts=[]
-for i,d in enumerate(days):
-    x=left+i/max(1,len(days)-1)*usable
-    y=bottom-(math.sqrt(d["contributionCount"]/peak) if peak else 0)*(height-12)
-    pts.append((x,y,d["contributionCount"],d["date"]))
-path=" ".join(("M" if i==0 else "L")+f"{x:.1f},{y:.1f}" for i,(x,y,_,_) in enumerate(pts))
-links="".join(f'<line x1="{a[0]:.1f}" y1="{a[1]:.1f}" x2="{b[0]:.1f}" y2="{b[1]:.1f}" stroke="#a97bff" stroke-opacity=".16"/>' for a,b in zip(pts,pts[1:]) if a[2] and b[2])
-nodes="".join(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{2.4+5.2*math.sqrt(c/peak):.2f}" fill="#67f5ff" opacity="{.38+.62*math.sqrt(c/peak):.3f}"><title>{html.escape(d)}: {c} contributions</title></circle>' for x,y,c,d in pts if c)
-svg=f'''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="490" viewBox="0 0 1200 490">
-<defs><linearGradient id="b"><stop stop-color="#071326"/><stop offset=".55" stop-color="#0b1730"/><stop offset="1" stop-color="#160b2e"/></linearGradient><filter id="g"><feGaussianBlur stdDeviation="4" result="x"/><feMerge><feMergeNode in="x"/><feMergeNode in="SourceGraphic"/></feMerge></filter><pattern id="p" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#6cefff" stroke-opacity=".055"/></pattern></defs>
-<rect width="1200" height="490" rx="28" fill="url(#b)"/><rect x="1" y="1" width="1198" height="488" rx="28" fill="url(#p)" stroke="#3cecff" stroke-opacity=".35"/>
-<text x="58" y="64" fill="#6ef7ff" font-family="Arial" font-size="15" letter-spacing="4">04 / LIVE CONTRIBUTION SIGNAL</text><text x="58" y="105" fill="#f1f7ff" font-family="Arial" font-size="30" font-weight="700">NEURAL ACTIVITY MAP</text><text x="58" y="133" fill="#728bad" font-family="Arial" font-size="14">{total} contributions in the last year · real GitHub data</text>
-<g transform="translate(58 170)"><rect width="1084" height="260" rx="18" fill="#071426" stroke="#39f6ff" stroke-opacity=".35"/><path d="M22 216H1060 M22 178H1060 M22 140H1060 M22 102H1060 M22 64H1060" stroke="#5eefff" stroke-opacity=".06"/><g>{links}</g><path d="{path}" fill="none" stroke="#39f6ff" stroke-opacity=".62" stroke-width="2" filter="url(#g)"/><path d="{path}" fill="none" stroke="#b66cff" stroke-opacity=".25" stroke-width="8" filter="url(#g)"/><g>{nodes}</g><rect x="20" y="42" width="2" height="180" fill="#d36bff" opacity=".55"><animate attributeName="x" values="20;1058;20" dur="6s" repeatCount="indefinite"/></rect><text x="32" y="28" fill="#7d96bb" font-size="10" letter-spacing="2">CONTRIBUTION SIGNAL / DAILY INTENSITY / ACTIVE-DAY NETWORK</text></g>
-<text x="58" y="460" fill="#6ef7ff" font-family="Arial" font-size="12" letter-spacing="2">SOURCE</text><text x="120" y="460" fill="#7b8fae" font-family="Arial" font-size="12">GitHub GraphQL contributionCalendar → custom SVG renderer → README</text></svg>'''
-open("assets/activity.svg","w",encoding="utf-8").write(svg)
-print(f"Generated {total} contributions.")
+# Monthly cybernetic activity chart.
+# This profile intentionally uses a visual/demo monthly series so the chart shape
+# stays consistent with the README design.
+from pathlib import Path
+
+values = [3,6,4,8,5,7,2,9,6,4,7,5,8,3,6,10,5,7,4,8,6,3,9,5,7,4,6,8,5,9]
+W,H=1040,520
+left,right,top,bottom=78,28,54,86
+plot_w=W-left-right
+plot_h=H-top-bottom
+maxv=10
+bar_w=21
+gap=(plot_w-30*bar_w)/29
+
+svg=f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#07111f"/><stop offset=".55" stop-color="#0a1428"/><stop offset="1" stop-color="#171334"/></linearGradient>
+<linearGradient id="barCyan" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#07547d"/><stop offset=".45" stop-color="#00d9ff"/><stop offset="1" stop-color="#1b6cff"/></linearGradient>
+<linearGradient id="barPurple" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4d126e"/><stop offset=".45" stop-color="#c72cf5"/><stop offset="1" stop-color="#6e39ff"/></linearGradient>
+<linearGradient id="barGreen" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#075e5a"/><stop offset=".45" stop-color="#21e5b2"/><stop offset="1" stop-color="#18a98e"/></linearGradient>
+<linearGradient id="barOrange" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#743006"/><stop offset=".45" stop-color="#ff9b13"/><stop offset="1" stop-color="#c64a08"/></linearGradient>
+<pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#273a5c" stroke-opacity=".22"/></pattern>
+</defs>
+<rect width="100%" height="100%" rx="18" fill="url(#bg)"/>
+<rect x="20" y="18" width="{W-40}" height="{H-36}" rx="14" fill="url(#grid)" stroke="#16375a"/>
+<text x="50" y="50" fill="#00e5ff" font-family="Arial,sans-serif" font-size="12" letter-spacing="3">MONTHLY ACTIVITY // 30 DAYS</text>
+<text x="{W-50}" y="50" text-anchor="end" fill="#8b9bc0" font-family="Arial,sans-serif" font-size="10" letter-spacing="2">DEMO DATA</text>
+'''
+for v in range(0,11,2):
+    y=top+plot_h-(v/maxv)*plot_h
+    svg+=f'<line x1="{left}" y1="{y:.1f}" x2="{W-right}" y2="{y:.1f}" stroke="#355071" stroke-opacity=".42"/>'
+    svg+=f'<text x="{left-15}" y="{y+4:.1f}" text-anchor="end" fill="#91a4c7" font-family="Arial,sans-serif" font-size="11">{v}</text>'
+svg+=f'<text x="24" y="{top+plot_h/2}" transform="rotate(-90 24 {top+plot_h/2})" text-anchor="middle" fill="#b8c7e5" font-family="Arial,sans-serif" font-size="11" letter-spacing="2">HOURS</text>'
+colors=["barCyan","barPurple","barGreen","barOrange"]
+for i,val in enumerate(values):
+    x=left+i*(bar_w+gap); bh=(val/maxv)*plot_h; y=top+plot_h-bh; depth=9
+    svg+=f'<polygon points="{x+bar_w},{y+5} {x+bar_w+depth},{y-2} {x+bar_w+depth},{top+plot_h-2} {x+bar_w},{top+plot_h}" fill="#081a31" stroke="#183a59" stroke-width=".7"/>'
+    svg+=f'<rect x="{x:.1f}" y="{y:.1f}" width="{bar_w}" height="{bh:.1f}" rx="2" fill="url(#{colors[i%4]})" stroke="#5beaff" stroke-opacity=".35"/>'
+    svg+=f'<polygon points="{x},{y} {x+bar_w},{y} {x+bar_w+depth},{y-7} {x+depth},{y-7}" fill="#78efff" fill-opacity=".55" stroke="#a8f7ff" stroke-opacity=".6"/>'
+    svg+=f'<text x="{x+bar_w/2}" y="{y-13}" text-anchor="middle" fill="#d8f9ff" font-family="Arial,sans-serif" font-size="10" font-weight="bold">{val}h</text>'
+    svg+=f'<text x="{x+bar_w/2+2}" y="{top+plot_h+24}" transform="rotate(-45 {x+bar_w/2+2} {top+plot_h+24})" text-anchor="end" fill="#7f91b5" font-family="Arial,sans-serif" font-size="9">2026-{i+1:02d}</text>'
+    svg+=f'<line x1="{x+bar_w/2}" y1="{top+plot_h+2}" x2="{x+bar_w/2}" y2="{top+plot_h+8}" stroke="#54708e"/>'
+svg+=f'<text x="{W/2}" y="{H-16}" text-anchor="middle" fill="#00e5ff" font-family="Arial,sans-serif" font-size="10" letter-spacing="2">DATE / DAY</text></svg>'
+Path(__file__).resolve().parents[1].joinpath("assets/activity.svg").write_text(svg,encoding="utf-8")
