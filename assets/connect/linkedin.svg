@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" role="img" aria-label="LINKEDIN">
+<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#39f5ff"/><stop offset="1" stop-color="#a879ff"/></linearGradient></defs>
+<rect x="4" y="4" width="512" height="112" rx="18" fill="#07111f" stroke="url(#g)" stroke-opacity=".55"/>
+<circle cx="48" cy="60" r="22" fill="#0b1830" stroke="#39f5ff" stroke-opacity=".65"/>
+<text x="48" y="67" text-anchor="middle" fill="#39f5ff" font-family="monospace" font-size="20" font-weight="700">↗</text>
+<text x="88" y="52" fill="#dffcff" font-family="monospace" font-size="21" font-weight="700" letter-spacing="2">LINKEDIN</text>
+<text x="88" y="78" fill="#7693ad" font-family="monospace" font-size="13">muhammad-saad-ai · CLICK TO CONNECT</text>
+</svg>

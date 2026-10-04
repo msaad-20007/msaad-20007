@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 210" role="img" aria-label="IMPACTHUB">
+<defs>
+ <linearGradient id="g" x1="0" x2="1"><stop stop-color="#39f5ff"/><stop offset="1" stop-color="#a879ff"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect x="5" y="5" width="610" height="200" rx="18" fill="#07111f" stroke="#39f5ff" stroke-opacity=".35"/>
+<path d="M5 55H615M28 5V205" stroke="#39f5ff" stroke-opacity=".12"/>
+<circle cx="42" cy="30" r="5" fill="#39f5ff" filter="url(#glow)"/><circle cx="60" cy="30" r="4" fill="#a879ff"/>
+<text x="82" y="36" fill="#7693ad" font-family="monospace" font-size="14" letter-spacing="2">PROJECT NODE // REPOSITORY · GITHUB</text>
+<text x="42" y="100" fill="#dffcff" font-family="monospace" font-size="30" font-weight="700" letter-spacing="3">IMPACTHUB</text>
+<text x="42" y="132" fill="#7693ad" font-family="monospace" font-size="15">Community volunteer + project management</text>
+<rect x="42" y="157" width="190" height="30" rx="15" fill="#0b1830" stroke="url(#g)" stroke-opacity=".65"/>
+<text x="137" y="177" text-anchor="middle" fill="#39f5ff" font-family="monospace" font-size="12" font-weight="700">CLICK NODE TO OPEN</text>
+<path d="M540 100h38m-12-12 12 12-12 12" fill="none" stroke="url(#g)" stroke-width="3"/>
+<text x="42" y="195" fill="#7693ad" font-family="monospace" font-size="10">https://github.com/msaad-20007/ImpactHub</text>
+</svg>
