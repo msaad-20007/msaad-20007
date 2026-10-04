@@ -1,20 +1,8 @@
-# V5 setup
+# SAAD.OS V4
 
-1. Replace the files in your profile repository with this package.
-2. Commit and push to `main`.
-3. Run **Actions → Refresh Cybernetic Activity → Run workflow** once.
-4. The workflow refreshes the 2D daily contribution bars from GitHub's GraphQL `contributionCalendar`.
+Copy the files into `msaad-20007/msaad-20007`.
 
-## Navigation
+The activity renderer uses GitHub GraphQL contribution data and converts the daily counts into a custom signal/network SVG. The workflow runs every 6 hours and supports manual `workflow_dispatch`.
 
-SVGs are visual-only. Real README links surround the project and social visuals.
-
-- Prime-Step → deployed Vercel app
-- ImpactHub → GitHub repository
-- HoloInput → GitHub repository
-- HunarHub → GitHub repository
-- GitHub / LinkedIn → real profiles
-
-## Contribution chart
-
-The activity chart uses real GitHub contribution data. Every week has seven daily bars (Monday through Sunday). Bar height is proportional to that day's contribution count. Month/year labels and exact date/count tooltips are embedded in the generated SVG. The native GitHub contribution history link is also provided.
+After pushing, open Actions → Refresh Cybernetic Activity → Run workflow once.
+The workflow declares `contents: write` so it can commit the generated SVG.
