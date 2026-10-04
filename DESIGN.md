@@ -1,5 +1,7 @@
 # Cybernetic Profile V5
 
-V5 keeps the cyberpunk SVG visual system but separates **visuals from navigation**. Project cards are individual SVG assets wrapped by real Markdown/HTML links in `README.md`. Social cards use the same pattern. This avoids the previous SVG-as-a-single-image problem where clicks opened the SVG file itself.
+V5 preserves the full-width cyberpunk visual scale. Project and social SVGs are visual-only and are wrapped in real README links, so navigation opens the destination instead of the SVG source.
 
-The activity visual is still generated from GitHub contribution data by Actions. For exact native date/count inspection, the profile provides a direct link to the GitHub contribution history.
+The contribution section is a real-data 2D daily bar chart. GitHub Actions fetches the user's `contributionCalendar` through GraphQL and regenerates the SVG. Each week contains seven bars in Monday→Sunday order; taller bars mean more contributions that day. Month/year labels are shown, and each bar includes an SVG tooltip containing its exact date and contribution count.
+
+The SVG is only the presentation layer; the underlying numbers are generated from GitHub contribution data on every workflow run, not a fake/static dataset. The native GitHub contribution profile link remains available for full native inspection.
