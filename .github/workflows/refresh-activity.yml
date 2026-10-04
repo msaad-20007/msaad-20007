@@ -1,0 +1,25 @@
+name: Refresh Cybernetic Activity
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate live activity SVG
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USER: msaad-20007
+        run: python scripts/generate_activity.py
+      - name: Commit updated activity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/activity.svg
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: refresh live activity"
+          git push
